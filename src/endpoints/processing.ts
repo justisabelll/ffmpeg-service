@@ -2,22 +2,11 @@ import { Hono } from 'hono';
 import { tmpdir } from 'os';
 import { mkdtemp, rm } from 'fs/promises';
 import * as path from 'path';
-import { validateArgs } from './utils';
+import { validateArgs } from '../utils';
 
-type Variables = {
-  audioFile: File;
-  args: string[];
-  workDir: string;
-};
+export const processing = new Hono();
 
-const app = new Hono<{ Variables: Variables }>();
-
-app.get('/', (c) => {
-  return c.text('Hello Hono!');
-});
-
-// processing endpoint
-app.post('/process', async (c) => {
+processing.post('/process', async (c) => {
   // get audio file
   const body = await c.req.parseBody();
   const audioFile = body['audioFile'] as File;
@@ -70,8 +59,3 @@ app.post('/process', async (c) => {
     return c.json({ error: (error as Error).message }, 500);
   }
 });
-
-export default {
-  port: 8080,
-  fetch: app.fetch,
-};

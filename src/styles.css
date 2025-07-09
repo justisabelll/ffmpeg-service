@@ -1,0 +1,100 @@
+@import 'tailwindcss';
+@plugin "daisyui";
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('https://rsms.me/inter/font-files/Inter-roman.var.woff2?v=3.19')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('https://rsms.me/inter/font-files/Inter-italic.var.woff2?v=3.19')
+    format('woff2');
+}
+
+html {
+  font-family: 'Inter', sans-serif;
+}
+
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: 'Inter var', sans-serif;
+  }
+}
+
+@plugin "daisyui" {
+  themes: business;
+}
+
+@plugin "daisyui/theme" {
+  name: business;
+  default: true;
+
+  /* border radius */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.25rem;
+
+  /*   Subtle effects */
+  --depth: 0.8;
+  --noise: 0;
+}
+/* @plugin "daisyui/theme" { */
+/*   name: 'mytheme'; */
+/*   default: true; */
+/*   prefersdark: true; */
+/*   color-scheme: dark; */
+
+/*   Modern dark theme with subtle, elegant colors */
+/*   --color-base-100: oklch(0.27 0 0);  Main dark background */
+/*   --color-base-200: oklch(0.24 0 0);  Slightly darker background */
+/*   --color-base-300: oklch(0.21 0 0);  Darkest background */
+/*   --color-base-content: oklch(0.95 0 0);  Light text for contrast */
+
+/*   Refined primary color - soft teal */
+/*   --color-primary: oklch(0.65 0.15 200);  Muted teal */
+/*   --color-primary-content: oklch(0.98 0 0); */
+
+/*   Complementary colors */
+/*   --color-secondary: oklch(0.7 0.12 220);  Soft blue */
+/*   --color-secondary-content: oklch(0.98 0 0); */
+/*   --color-accent: oklch(0.75 0.12 180);  Light cyan */
+/*   --color-accent-content: oklch(0.98 0 0); */
+
+/*   Neutral tones */
+/*   --color-neutral: oklch(0.35 0 0);  Mid-gray */
+/*   --color-neutral-content: oklch(0.95 0 0); */
+
+/*   Status colors - muted but clear */
+/*   --color-info: oklch(0.7 0.15 200);  Soft blue */
+/*   --color-info-content: oklch(0.1 0 0); */
+/*   --color-success: oklch(0.65 0.15 150);  Muted green */
+/*   --color-success-content: oklch(0.1 0 0); */
+/*   --color-warning: oklch(0.75 0.15 90);  Soft amber */
+/*   --color-warning-content: oklch(0.1 0 0); */
+/*   --color-error: oklch(0.65 0.2 30);  Muted red */
+/*   --color-error-content: oklch(0.98 0 0); */
+
+/*   Generous border radius for a friendly feel */
+/*   --radius-selector: 1rem; */
+/*   --radius-field: 0.75rem; */
+/*   --radius-box: 0.875rem; */
+
+/*   Base sizes */
+/*   --size-selector: 0.25rem; */
+/*   --size-field: 0.25rem; */
+
+/*   Refined borders */
+/*   --border: 1px; */
+
+/*   Subtle effects */
+/*   --depth: 0.8; */
+/*   --noise: 0; */
+/* } */
