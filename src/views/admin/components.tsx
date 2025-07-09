@@ -1,25 +1,7 @@
-import { Hono } from 'hono';
-import Layout from './layout';
+import { jobsQuery, getAPIKey } from './shared';
+import type { Job, APIKey } from './shared';
 
-const admin = new Hono();
-
-admin.get('/', (c) => {
-  return c.html(
-    <Layout>
-      <Login />
-    </Layout>
-  );
-});
-
-// htmx swap cheatsheet:
-//   hx-swap="innerHTML"   // Replace the inside content of the target element
-//   hx-swap="outerHTML"   // Replace the entire target element itself
-//   hx-swap="beforebegin" // Insert content just before the target element
-//   hx-swap="afterbegin"  // Insert content at the very start inside the target element
-//   hx-swap="beforeend"   // Insert content at the very end inside the target element
-//   hx-swap="afterend"    // Insert content just after the target element
-
-const Login = ({ error }: { error?: string } = {}) => {
+export const Login = ({ error }: { error?: string } = {}) => {
   return (
     <>
       <div
@@ -93,19 +75,7 @@ const Login = ({ error }: { error?: string } = {}) => {
   );
 };
 
-admin.post('/login', async (c) => {
-  const body = await c.req.parseBody();
-  const username = body['username'];
-  const password = body['password'];
-
-  if (username === 'admin' && password === 'admin') {
-    return c.html(<AdminDashboard username={username} />);
-  } else {
-    return c.html(<Login error="Invalid username or password." />);
-  }
-});
-
-const AdminDashboard = ({ username }: { username: string }) => {
+export const AdminDashboard = ({ username }: { username: string }) => {
   return (
     <>
       <div className="min-h-screen bg-base-200 py-8">
@@ -132,22 +102,7 @@ const AdminDashboard = ({ username }: { username: string }) => {
   );
 };
 
-admin.get('/jobs', (c) => {
-  return c.html(<JobsTable />);
-});
-
-interface JobResponse {
-  lastPolledAt: Date;
-  jobs: {
-    id: number;
-    apiKeySource: string;
-    status: string;
-    createdAt: string;
-    updatedAt: string;
-  }[];
-}
-
-const JobsTable = () => {
+export const JobsTable = () => {
   const jobResponse = jobsQuery();
 
   if (jobResponse.jobs.length === 0) {
@@ -180,7 +135,7 @@ const JobsTable = () => {
           </tr>
         </thead>
         <tbody className="text-base text-base-content">
-          {jobResponse.jobs.map((job, idx) => (
+          {jobResponse.jobs.map((job: Job, idx: number) => (
             <tr
               key={job.id}
               className={
@@ -232,15 +187,7 @@ const JobsTable = () => {
   );
 };
 
-interface APIKey {
-  name: string;
-  id: number;
-  key: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-const APIKeysTable = () => {
+export const APIKeysTable = () => {
   const apiKeys = getAPIKey();
 
   if (apiKeys.length === 0) {
@@ -252,10 +199,10 @@ const APIKeysTable = () => {
       <table className="min-w-full table-auto border-separate border-spacing-0">
         <thead>
           <tr className="bg-base-300 text-lg text-base-content">
+            <th className="py-4 px-6 border-b border-base-300 text-left">ID</th>
             <th className="py-4 px-6 border-b border-base-300 text-left">
               Name
             </th>
-            <th className="py-4 px-6 border-b border-base-300 text-left">ID</th>
             <th className="py-4 px-6 border-b border-base-300 text-left">
               Key
             </th>
@@ -268,9 +215,9 @@ const APIKeysTable = () => {
           </tr>
         </thead>
         <tbody className="text-base text-base-content">
-          {apiKeys.map((key: APIKey, idx: number) => (
+          {apiKeys.map((apiKey: APIKey, idx: number) => (
             <tr
-              key={key.id}
+              key={apiKey.id}
               className={
                 idx % 2 === 0
                   ? 'bg-base-200 hover:bg-base-300'
@@ -278,19 +225,19 @@ const APIKeysTable = () => {
               }
             >
               <td className="py-4 px-6 border-b border-base-300 font-mono">
-                {key.name}
+                {apiKey.id}
+              </td>
+              <td className="py-4 px-6 border-b border-base-300">
+                {apiKey.name}
               </td>
               <td className="py-4 px-6 border-b border-base-300 font-mono">
-                {key.id}
+                {apiKey.key}
               </td>
               <td className="py-4 px-6 border-b border-base-300 font-mono">
-                {'*'.repeat(key.key.length - 8) + key.key.slice(-4)}
+                {apiKey.createdAt}
               </td>
               <td className="py-4 px-6 border-b border-base-300 font-mono">
-                {key.createdAt}
-              </td>
-              <td className="py-4 px-6 border-b border-base-300 font-mono">
-                {key.updatedAt}
+                {apiKey.updatedAt}
               </td>
             </tr>
           ))}
@@ -299,60 +246,3 @@ const APIKeysTable = () => {
     </div>
   );
 };
-
-function jobsQuery(): JobResponse {
-  return {
-    lastPolledAt: new Date(),
-    jobs: [
-      {
-        id: 1,
-        apiKeySource: 'apiKey1',
-        status: 'pending',
-        createdAt: '2021-01-01',
-        updatedAt: '2021-01-01',
-      },
-      {
-        id: 2,
-        apiKeySource: 'apiKey2',
-        status: 'running',
-        createdAt: '2021-01-01',
-        updatedAt: '2021-01-01',
-      },
-      {
-        id: 3,
-        apiKeySource: 'apiKey3',
-        status: 'completed',
-        createdAt: '2021-01-01',
-        updatedAt: '2021-01-01',
-      },
-    ],
-  };
-}
-
-function getAPIKey() {
-  return [
-    {
-      name: 'API Key 1',
-      id: 1,
-      key: '1234567890',
-      createdAt: '2021-01-01',
-      updatedAt: '2021-01-01',
-    },
-    {
-      name: 'API Key 2',
-      id: 2,
-      key: '1234567890',
-      createdAt: '2021-01-01',
-      updatedAt: '2021-01-01',
-    },
-    {
-      name: 'API Key 3',
-      id: 3,
-      key: '1234567890',
-      createdAt: '2021-01-01',
-      updatedAt: '2021-01-01',
-    },
-  ];
-}
-
-export default admin;

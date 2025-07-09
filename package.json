@@ -3,11 +3,17 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "bun dist/server/index.js"
+    "start": "bun dist/server/index.js",
+    "push": "bunx drizzle-kit generate && bunx drizzle-kit migrate",
+    "seed": "bun run src/db/util/seed.ts",
+    "purge": "bun run src/db/util/purge.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
+    "better-sqlite3": "^12.2.0",
     "daisyui": "^5.0.46",
+    "dotenv": "^17.2.0",
+    "drizzle-orm": "^0.44.2",
     "hono": "^4.8.4",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3"
@@ -15,7 +21,9 @@
   "devDependencies": {
     "@hono/vite-build": "^1.6.2",
     "@hono/vite-dev-server": "^0.20.0",
-    "@types/bun": "latest",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/bun": "^1.2.18",
+    "drizzle-kit": "^0.31.4",
     "typed-htmx": "^0.3.1",
     "vite": "^7.0.3"
   }

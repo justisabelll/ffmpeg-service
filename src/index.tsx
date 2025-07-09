@@ -3,19 +3,17 @@ import 'typed-htmx';
 import admin from './views/admin';
 import { processing } from './endpoints/processing';
 
-type Variables = {
-  audioFile: File;
-  args: string[];
-  workDir: string;
-};
+const app = new Hono();
 
-const app = new Hono<{ Variables: Variables }>();
-
-app.route('/', admin);
+app.route('/admin', admin);
 app.route('/processing', processing);
 
+app.get('/', (c) => {
+  return c.text('Hello from FFMPEG Service!');
+});
+
 export default {
-  port: 8080,
+  port: 3000,
   fetch: app.fetch,
 };
 
