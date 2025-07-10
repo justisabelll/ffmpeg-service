@@ -3,6 +3,7 @@ import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 export const apiKeys = sqliteTable('api_keys', {
   id: integer('id').primaryKey(),
   key: text('key').notNull(),
+  nickname: text('nickname').notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
 });
 
@@ -15,6 +16,10 @@ export const jobs = sqliteTable('jobs', {
   command: text('command').notNull(),
   error: text('error'),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
-  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
-  processedAt: integer('processed_at', { mode: 'timestamp' }),
+  processedDoneAt: integer('processed_done_at', {
+    mode: 'timestamp',
+  }).notNull(),
 });
+
+export type Job = typeof jobs.$inferInsert;
+export type APIKey = typeof apiKeys.$inferSelect;

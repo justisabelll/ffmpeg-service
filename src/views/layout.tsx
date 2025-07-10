@@ -1,6 +1,6 @@
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html data-theme="business">
+    <html data-theme="minimal">
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,16 +9,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           integrity="sha384-Akqfrbj/HpNVo8k11SXBb6TlBWmXXlYQrCSqEWmyKJe+hDm3Z/B2WVG4smwBkRVm"
           crossorigin="anonymous"
         ></script>
-        {/* <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css"
-        /> */}
         <link href="src/styles.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-        <title>ffmpeg service</title>
+        <title>FFMPEG Service</title>
       </head>
-      <body className="bg-gray-50">
-        <main>{children}</main>
+      <body className="min-h-screen bg-base-100 text-base-content antialiased">
+        <main className="animate-fadeIn">{children}</main>
       </body>
     </html>
   );

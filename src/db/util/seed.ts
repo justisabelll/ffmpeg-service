@@ -21,15 +21,15 @@ function generateFakeJobData(apiKeyId: number): typeof jobs.$inferInsert {
     status: statuses[Math.floor(Math.random() * statuses.length)],
     command: commands[Math.floor(Math.random() * commands.length)],
     createdAt: new Date(),
-    updatedAt: new Date(),
-    processedAt: null,
-    error: null,
+    processedDoneAt: new Date(),
+    error: '',
   };
 }
 
 function generateFakeApiKeyData(): typeof apiKeys.$inferInsert {
   return {
     key: randomBytes(32).toString('hex'),
+    nickname: `API Key ${Math.floor(Math.random() * 10000)}`,
     createdAt: new Date(),
   };
 }
@@ -61,6 +61,8 @@ export const seed = async () => {
 };
 
 console.log('Cleaning database before seeding...');
-purge();
-console.log('Seeding database...');
-seed();
+(async () => {
+  await purge();
+  console.log('Seeding database...');
+  await seed();
+})();

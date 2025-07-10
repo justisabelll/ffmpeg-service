@@ -1,8 +1,8 @@
 {
   "name": "ffmpeg-service",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "bunx --bun vite",
+    "build": "bunx --bun vite build",
     "start": "bun dist/server/index.js",
     "push": "bunx drizzle-kit generate && bunx drizzle-kit migrate",
     "seed": "bun run src/db/util/seed.ts",

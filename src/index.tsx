@@ -12,10 +12,7 @@ app.get('/', (c) => {
   return c.text('Hello from FFMPEG Service!');
 });
 
-export default {
-  port: 3000,
-  fetch: app.fetch,
-};
+export default app;
 
 declare module 'hono/jsx' {
   namespace JSX {
